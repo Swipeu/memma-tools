@@ -28,13 +28,8 @@ namespace MTools.Reorderable
 
         [SerializeField] List<SerializableKeyValuePair> serializedList = new List<SerializableKeyValuePair>();
 
-
-        bool successfullSerializationStart = false;
         public void OnAfterDeserialize()
         {
-            //if (!successfullSerializationStart || !CanCompareWithAllPairs(serializedList))
-            //    return;
-
             this.Clear();
 
             for (int i = 0; i < serializedList.Count; i++)
@@ -58,14 +53,6 @@ namespace MTools.Reorderable
 
         public void OnBeforeSerialize()
         {
-            //if (!CanCompareWithAllPairs(serializedList))
-            //{
-            //    successfullSerializationStart = false;
-            //    return;
-            //}
-
-            successfullSerializationStart = true;
-
             var oldSerializedList = new List<SerializableKeyValuePair>(serializedList);
             serializedList.Clear();
 
@@ -94,19 +81,6 @@ namespace MTools.Reorderable
             }
         }
 
-        bool CanCompareWithAllPairs(List<SerializableKeyValuePair> list)
-        {
-            try
-            {
-                list.ForEach((p) => { bool comparison = p.key == null; });
-            }
-            catch (InvalidOperationException e)
-            {
-                return false;
-            }
-            return true;
-        }
-
         bool HasConflict(SerializableKeyValuePair pair, List<SerializableKeyValuePair> list)
         {
             if (IsKeyNull(pair))
@@ -124,7 +98,7 @@ namespace MTools.Reorderable
             {
                 return pair.key.Equals(null);
             }
-            catch(Exception e)
+            catch (Exception)
             {
                 return true;
             }

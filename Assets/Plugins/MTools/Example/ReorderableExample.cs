@@ -24,7 +24,7 @@ public class ReorderableExample : MonoBehaviour
 {
     [SerializeField] ReorderableList<TestEnum> test1;
     [SerializeField] ReorderableList<TestStruct> test2;
-    [SerializeField] ReorderableDictionary<GameObject, string> test3;
+    [SerializeField] ReorderableDictionary<GameObject, string> test3 = default;
 
     private void Start()
     {
