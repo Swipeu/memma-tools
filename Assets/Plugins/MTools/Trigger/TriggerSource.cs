@@ -4,12 +4,12 @@ using MTools.Identifier;
 
 namespace MTools.Trigger
 {
-    public abstract class TriggerSource<T> : MonoBehaviour
-        where T : ITriggerEvent
+    public abstract class TriggerSource<EventType> : MonoBehaviour
+        where EventType : ITriggerEvent
     {
         [SerializeField] ReorderableList<TriggerTarget> triggerTargets;
 
-        protected void Trigger(T triggerEvent)
+        protected void Trigger(EventType triggerEvent)
         {
             triggerTargets.ForEach(triggerTarget => 
             {
@@ -18,7 +18,7 @@ namespace MTools.Trigger
 
                 triggerTarget.Trigger();
 
-                if (!(triggerTarget is ITriggerTarget<T> convertedTriggerTarget))
+                if (!(triggerTarget is ITriggerTarget<EventType> convertedTriggerTarget))
                     return;
 
                 convertedTriggerTarget.Trigger(triggerEvent); 
