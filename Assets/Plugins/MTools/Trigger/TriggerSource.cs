@@ -1,40 +1,28 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using MTools.Reorderable;
-using MTools.Trigger.Event;
 using MTools.Identifier;
 
 namespace MTools.Trigger
 {
-    public abstract class TriggerSource : MonoBehaviour
+    public abstract class TriggerSource<T> : MonoBehaviour
+        where T : ITriggerEvent
     {
-        [SerializeField] ReorderableList<Triggerable> triggerTargets;
+        [SerializeField] ReorderableList<TriggerTarget> triggerTargets;
 
-        TriggerEvent _currentEvent;
-        TriggerEvent CurrentEvent
+        protected void Trigger(T triggerEvent)
         {
-            get
+            triggerTargets.ForEach(triggerTarget => 
             {
-                if (_currentEvent == null)
-                    _currentEvent = new TriggerEvent();
+                if (triggerTarget == null)
+                    return;
 
-                return _currentEvent;
-            }
-            set
-            {
-                _currentEvent = value;
-            }
+                triggerTarget.Trigger();
+
+                if (!(triggerTarget is ITriggerTarget<T> convertedTriggerTarget))
+                    return;
+
+                convertedTriggerTarget.Trigger(triggerEvent); 
+            });
         }
-
-        protected void Trigger()
-        {
-            CurrentEvent.Lock();
-            TriggerEvent copy = CurrentEvent;
-            CurrentEvent = null;
-            triggerTargets.ForEach(t => { if (t != null) t.Trigger(copy); });
-        }
-
-        protected void Add<T>(UniqueIdentifier<T> identifier, T data)
-            => CurrentEvent.Set(identifier, data);
     }
 }
