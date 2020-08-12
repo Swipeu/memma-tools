@@ -16,10 +16,11 @@ namespace MTools.Trigger
                 if (triggerTarget == null)
                     return;
 
-                triggerTarget.Trigger();
-
                 if (!(triggerTarget is ITriggerTarget<EventType> convertedTriggerTarget))
+                {
+                    triggerTarget.TriggerUnhandled(triggerEvent);
                     return;
+                }
 
                 convertedTriggerTarget.Trigger(triggerEvent); 
             });

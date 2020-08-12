@@ -9,6 +9,6 @@ namespace MTools.Trigger
 {
     public abstract class TriggerTarget : MonoBehaviour
     {
-        public abstract void Trigger();
+        public virtual void TriggerUnhandled(ITriggerEvent triggerEvent) { }
     }
 }
