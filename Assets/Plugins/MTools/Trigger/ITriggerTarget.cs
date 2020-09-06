@@ -6,6 +6,6 @@ namespace MTools.Trigger
     public interface ITriggerTarget<T>
         where T : ITriggerEvent
     {
-        void Trigger(T triggerEvent);
+        void OnTrigger(T triggerEvent);
     }
 }

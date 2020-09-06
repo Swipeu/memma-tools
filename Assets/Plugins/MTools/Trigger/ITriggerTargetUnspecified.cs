@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace MTools.Trigger
 {
-    public abstract class TriggerTarget : MonoBehaviour
+    public interface ITriggerTargetUnspecified
     {
-        public virtual void TriggerUnhandled(ITriggerEvent triggerEvent) { }
+        void OnTrigger(ITriggerEvent triggerEvent);
     }
 }

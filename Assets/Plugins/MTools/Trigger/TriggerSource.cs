@@ -7,7 +7,7 @@ namespace MTools.Trigger
     public abstract class TriggerSource<EventType> : MonoBehaviour
         where EventType : ITriggerEvent
     {
-        [SerializeField] ReorderableList<TriggerTarget> triggerTargets;
+        [SerializeField] ReorderableList<MonoBehaviour> triggerTargets;
 
         protected void Trigger(EventType triggerEvent)
         {
@@ -18,11 +18,13 @@ namespace MTools.Trigger
 
                 if (!(triggerTarget is ITriggerTarget<EventType> convertedTriggerTarget))
                 {
-                    triggerTarget.TriggerUnhandled(triggerEvent);
+                    if(triggerTarget is ITriggerTargetUnspecified triggerTargetUnspecified)
+                        triggerTargetUnspecified.OnTrigger(triggerEvent);
+
                     return;
                 }
 
-                convertedTriggerTarget.Trigger(triggerEvent); 
+                convertedTriggerTarget.OnTrigger(triggerEvent); 
             });
         }
     }
